@@ -11,8 +11,6 @@ image:
   tag: ""
 imagePullSecrets: []
 nameOverride: ""
-appName: ""
-vhost: ""
 fullnameOverride: ""
 
 serviceAccount:
