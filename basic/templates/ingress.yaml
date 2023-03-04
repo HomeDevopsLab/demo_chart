@@ -16,7 +16,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ $release.Values.appName }}
+                name: {{ $.Values.appName }}
                 port:
                   number: {{ $svcPort }}
     {{- end }}
