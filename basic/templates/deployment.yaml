@@ -16,8 +16,8 @@ spec:
         {{- include "basic.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.imageTag }}"
+        - name: {{ .Values.appName }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           resources:
             limits:
               memory: "128Mi"
