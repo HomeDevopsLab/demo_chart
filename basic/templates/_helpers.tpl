@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "basic.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Values.appName | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -48,15 +48,4 @@ Selector labels
 {{- define "basic.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "basic.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "basic.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "basic.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
 {{- end }}
