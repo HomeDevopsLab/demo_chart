@@ -16,7 +16,7 @@ spec:
         {{- include "basic.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Release.Name }}
+        - name: {{ .Values.appName }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           resources:
             limits:
