@@ -18,7 +18,7 @@ spec:
       containers:
         - name: {{ .Values.application.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          {{- if .Values.volumes }}
+          {{- if hasKey .Values "volumes" }}
           volumeMounts:
             - mountPath: /storage
               name: {{ .Values.application.name }}-volume
@@ -46,13 +46,6 @@ spec:
                 name: {{ .Values.application.name }}-db
                 key: dbname
           {{- end }}
-          {{- if .Values.volumes and .Values.volumes.type.nfs }}
-          - name: STORAGE_NFS
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.application.name }}-storage
-                key: address
-          {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -61,10 +54,10 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-    {{- if .Values.volumes }}
+    {{- if hasKey .Values "volumes" }}
       volumes:
         - name: {{ .Values.application.name }}-volume
-          {{- if .Values.volumes.type.nfs }}
+          {{- if hasKey .Values.volumes.type "nfs" }}
           {{- toYaml . | nindent 10 }}
           {{- end }} 
     {{- end }}
