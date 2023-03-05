@@ -83,3 +83,9 @@ affinity: {}
 application:
   name: ""
   type: ""
+volumes:
+  type:
+    nfs:
+      server: ""
+      path: ""
+      readOnly: false
