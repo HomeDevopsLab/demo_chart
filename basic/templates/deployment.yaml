@@ -16,8 +16,31 @@ spec:
         {{- include "basic.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: {{ .Values.appName }}
+        - name: {{ .Values.application.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env:
+          {{- if eq .Values.application.type "wordpress" }}
+          - name: WORDPRESS_DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.application.name }}-db
+                key: host
+          - name: WORDPRESS_DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.application.name }}-db
+                key: login
+          - name: WORDPRESS_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.application.name }}-db
+                key: password
+          - name: WORDPRESS_DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.application.name }}-db
+                key: dbname
+          {{- end }}
           resources:
             limits:
               memory: "128Mi"

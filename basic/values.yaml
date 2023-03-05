@@ -12,7 +12,6 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-appName: ""
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -79,3 +78,8 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+### My Custom config
+application:
+  name: ""
+  type: ""

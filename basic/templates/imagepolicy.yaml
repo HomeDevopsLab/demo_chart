@@ -2,11 +2,11 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
-  name: {{ .Values.appName }}
+  name: {{ .Values.application.name }}
   namespace: flux-system
 spec:
   imageRepositoryRef:
-    name: {{ .Values.appName }}
+    name: {{ .Values.application.name }}
   policy:
     semver:
       range: '>=0.0.1'
