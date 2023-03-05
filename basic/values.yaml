@@ -84,6 +84,7 @@ application:
   name: ""
   type: ""
 volumes:
+  enabled: false
   type:
     nfs:
       server: ""

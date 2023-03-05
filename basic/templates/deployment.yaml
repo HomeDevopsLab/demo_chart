@@ -18,7 +18,7 @@ spec:
       containers:
         - name: {{ .Values.application.name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          {{- if hasKey .Values "volumes" }}
+          {{- if .Values.volumes.enabled }}
           volumeMounts:
             - mountPath: /storage
               name: {{ .Values.application.name }}-volume
@@ -54,7 +54,7 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-    {{- if hasKey .Values "volumes" }}
+    {{- if .Values.volumes.enabled }}
       volumes:
         - name: {{ .Values.application.name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
