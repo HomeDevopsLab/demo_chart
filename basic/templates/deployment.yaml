@@ -58,6 +58,7 @@ spec:
       volumes:
         - name: {{ .Values.application.name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
-          {{- toYaml . | nindent 10 }}
+          nfs:
+            {{- toYaml . | nindent 12 }}
           {{- end }} 
     {{- end }}
