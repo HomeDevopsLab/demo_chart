@@ -41,13 +41,10 @@ spec:
                 name: {{ .Values.application.name }}-db
                 key: dbname
           {{- end }}
+          {{- with .Values.resources }}
           resources:
-            limits:
-              memory: "128Mi"
-              cpu: "500m"
-            requests:
-              memory: "50Mi"
-              cpu: "10m"
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 80
