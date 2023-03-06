@@ -20,7 +20,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           {{- if .Values.volumes.enabled }}
           volumeMounts:
-            - mountPath: /storage
+            - mountPath: /var/www/html
               name: {{ .Values.application.name }}-volume
           {{- end}}
           env:
