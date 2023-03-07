@@ -1,0 +1,40 @@
+{{- if .Values.volumes.enabled -}}
+{{- $websitedir := printf "%s%s" "/storage/" .Values.application.name -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: pre-install-job
+        image: "alpine:3.3"
+        volumeMounts:
+          - mountPath: /storage
+            name: {{ .Values.application.name }}-volume
+        command: ["/bin/sh", "mkdir", $websitedir ]
+      volumes:
+      {{- if hasKey .Values.volumes.type "nfs" }}
+      {{- with .Values.volumes.type.nfs }}
+      nfs:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}   
+{{- end }}
