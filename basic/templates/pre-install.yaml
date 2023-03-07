@@ -25,11 +25,11 @@ spec:
       restartPolicy: Never
       containers:
         - name: pre-install-job
-        image: "alpine:3.3"
-        volumeMounts:
-          - mountPath: /storage
-            name: {{ .Values.application.name }}-volume
-        command: ["/bin/sh", "mkdir", $websitedir ]
+          image: "alpine:3.3"
+          volumeMounts:
+            - mountPath: /storage
+              name: {{ .Values.application.name }}-volume
+          command: ["/bin/sh", "mkdir", $websitedir ]
       volumes:
       {{- if hasKey .Values.volumes.type "nfs" }}
       {{- with .Values.volumes.type.nfs }}
