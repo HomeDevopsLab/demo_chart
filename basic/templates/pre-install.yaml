@@ -31,10 +31,11 @@ spec:
               name: {{ .Values.application.name }}-volume
           command: ["/bin/sh", "mkdir", $websitedir ]
       volumes:
-      {{- if hasKey .Values.volumes.type "nfs" }}
-      {{- with .Values.volumes.type.nfs }}
-      nfs:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- end }}   
+        - name: {{ .Values.application.name }}-volume
+          {{- if hasKey .Values.volumes.type "nfs" }}
+          {{- with .Values.volumes.type.nfs }}
+          nfs:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          {{- end }}   
 {{- end }}
