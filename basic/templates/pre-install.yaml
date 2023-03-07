@@ -1,5 +1,4 @@
 {{- if .Values.volumes.enabled -}}
-{{- $websitedir := printf "%s%s" "/storage/" .Values.application.name -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -26,10 +25,13 @@ spec:
       containers:
         - name: pre-install-job
           image: "arm32v7/alpine:3.17.2"
+          env:
+            - name: WEBSITE_DIR
+              value: "/storage/{{ .Release.Name }}"
           volumeMounts:
             - mountPath: /storage
               name: {{ .Values.application.name }}-volume
-          command: ["/bin/sh", "/bin/mkdir", $websitedir ]
+          command: ["/bin/sh", "/bin/mkdir", "$(WEBSITE_DIR)" ]
       volumes:
         - name: {{ .Values.application.name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
