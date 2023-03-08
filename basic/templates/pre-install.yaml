@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: "{{ .Release.Name }}"
+  name: "{{ .Release.Name }}-preinstall"
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/instance: {{ .Release.Name | quote }}
@@ -30,11 +30,11 @@ spec:
             value: "/storage/{{ .Release.Name }}"
           volumeMounts:
             - mountPath: /storage
-              name: {{ .Values.application.name }}-volume
+              name: {{ .Release.Name }}-volume
           command: ["/bin/mkdir"]
           args: ["$(WEBSITE_DIR)"]
       volumes:
-        - name: {{ .Values.application.name }}-volume
+        - name: {{ .Release.Name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
           {{- with .Values.volumes.type.nfs }}
           nfs:

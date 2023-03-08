@@ -2,7 +2,7 @@
 Expand the name of the chart.
 */}}
 {{- define "basic.name" -}}
-{{- default .Chart.Name .Values.application.name | trunc 63 | trimSuffix "-" }}
+{{- default .Chart.Name .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
