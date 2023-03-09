@@ -1,4 +1,4 @@
-{{- if .Values.volumes.enabled -}}
+{{- if and .Values.volumes.enabled .Values.database.createdb -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -24,15 +24,43 @@ spec:
       restartPolicy: Never
       containers:
         - name: pre-install-job
-          image: "arm32v7/alpine:3.17.2"
+          image: devkrolikowski/swiss-army-knife:0.0.12
           env:
           - name: WEBSITE_DIR
             value: "/storage/{{ .Release.Name }}"
+          - name: DB_ADMIN_LOGIN
+            valueFrom:
+              secretKeyRef: k3s-db-admin
+              key: dblogin
+          - name: DB_ADMIN_PASS
+            valueFrom:
+              secretKeyRef: k3s-db-admin
+              key: dbpassword
+          - name: APPDB_NAME
+            value: {{ .Release.Name }}
+          - name: APPDB_LOGIN
+            valueFrom:
+              secretKeyRef: {{ .Release.Name }}-db
+              key: login
+          - name: APPDB_PASS
+            valueFrom:
+              secretKeyRef: {{ .Release.Name }}-db
+              key: password
+          - name: DB_HOST
+            value: {{ .Values.database.server }}
           volumeMounts:
             - mountPath: /storage
               name: {{ .Release.Name }}-volume
-          command: ["/bin/mkdir"]
-          args: ["$(WEBSITE_DIR)"]
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+                mkdir $(WEBSITE_DIR)
+                mysql -u$(DB_ADMIN_LOGIN) -p$(DB_ADMIN_PASS) -h$(DB_HOST) -e " \
+                CREATE DATABASE $(APPDB_NAME); \
+                CREATE USER '$(APPDB_LOGIN)'@'%' IDENTIFIED BY '$(APPDB_PASS)'; \
+                GRANT ALL ON $(APPDB_NAME).* TO '$(APPDB_LOGIN)'@'%';"
+                
       volumes:
         - name: {{ .Release.Name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}

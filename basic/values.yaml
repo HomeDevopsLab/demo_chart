@@ -90,3 +90,7 @@ volumes:
       server: ""
       path: ""
       readOnly: false
+database:
+  enabled: true
+  createdb: true
+  server: ""

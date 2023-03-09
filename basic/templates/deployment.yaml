@@ -26,10 +26,7 @@ spec:
           env:
           {{- if eq .Values.application.type "wordpress" }}
           - name: WORDPRESS_DB_HOST
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Release.Name }}-db
-                key: host
+            value: {{ .Release.database.server }}
           - name: WORDPRESS_DB_USER
             valueFrom:
               secretKeyRef:
