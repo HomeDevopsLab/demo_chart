@@ -30,22 +30,26 @@ spec:
             value: "/storage/{{ .Release.Name }}"
           - name: DB_ADMIN_LOGIN
             valueFrom:
-              secretKeyRef: k3s-db-admin
-              key: dblogin
+              secretKeyRef: 
+                name: k3s-db-admin
+                key: dblogin
           - name: DB_ADMIN_PASS
             valueFrom:
-              secretKeyRef: k3s-db-admin
-              key: dbpassword
+              secretKeyRef: 
+                name: k3s-db-admin
+                key: dbpassword
           - name: APPDB_NAME
             value: {{ .Release.Name }}
           - name: APPDB_LOGIN
             valueFrom:
-              secretKeyRef: {{ .Release.Name }}-db
-              key: login
+              secretKeyRef: 
+                name: {{ .Release.Name }}-db
+                key: login
           - name: APPDB_PASS
             valueFrom:
-              secretKeyRef: {{ .Release.Name }}-db
-              key: password
+              secretKeyRef: 
+                name: {{ .Release.Name }}-db
+                key: password
           - name: DB_HOST
             value: {{ .Values.database.server }}
           volumeMounts:
