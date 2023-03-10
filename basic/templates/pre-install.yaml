@@ -60,9 +60,9 @@ spec:
             - -c
             - >-
               /bin/mkdir ${WEBSITE_DIR};
-              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p${DB_ADMIN_PASS} -h ${DB_HOST} -e "CREATE DATABASE ${APPDB_NAME};";
-              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p${DB_ADMIN_PASS} -h ${DB_HOST} -e "CREATE USER '${APPDB_LOGIN}'@'%' IDENTIFIED BY '${APPDB_PASS}';";
-              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p${DB_ADMIN_PASS} -h ${DB_HOST} -e "GRANT ALL ON ${APPDB_NAME}.* TO '${APPDB_LOGIN}'@'%';";                
+              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p "${DB_ADMIN_PASS}" -h ${DB_HOST} -e "CREATE DATABASE ${APPDB_NAME};";
+              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p "${DB_ADMIN_PASS}" -h ${DB_HOST} -e "CREATE USER '${APPDB_LOGIN}'@'%' IDENTIFIED BY '${APPDB_PASS}';";
+              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p "${DB_ADMIN_PASS}" -h ${DB_HOST} -e "GRANT ALL ON ${APPDB_NAME}.* TO '${APPDB_LOGIN}'@'%';";                
       volumes:
         - name: {{ .Release.Name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
