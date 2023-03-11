@@ -6,8 +6,8 @@ metadata:
   name: {{ .Release.Name }}
   namespace: default
   annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port:   '9090'
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9090'
 spec:
   rules:
     {{- range .Values.ingress.hosts }}

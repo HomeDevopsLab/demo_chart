@@ -4,8 +4,8 @@ metadata:
   name: {{ .Release.Name }}
   namespace: default
   annotations:
-      prometheus.io/scrape: 'true'
-      prometheus.io/port:   '9090'
+    prometheus.io/scrape: 'true'
+    prometheus.io/port:   '9090'
 spec:
   type: {{ .Values.service.type }}
   ports:
