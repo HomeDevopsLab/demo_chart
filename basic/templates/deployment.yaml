@@ -5,7 +5,7 @@ metadata:
   namespace: default
   annotations:
     prometheus.io/scrape: 'true'
-    prometheus.io/port:   '9090'
+    prometheus.io/port:   '80'
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
