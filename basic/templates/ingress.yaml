@@ -5,9 +5,6 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}
   namespace: default
-  annotations:
-    prometheus.io/scrape: 'true'
-    prometheus.io/port:   '80'
 spec:
   rules:
     {{- range .Values.ingress.hosts }}
