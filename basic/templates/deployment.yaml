@@ -54,7 +54,7 @@ spec:
           {{- if hasKey .Values.volumes.type "nfs" }}
           nfs:
             server: {{ .Values.volumes.type.nfs.server }}
-            path: {{ .Values.volumes.type.nfs.path }}/{{ .Values.application.name }}
+            path: {{ .Values.volumes.type.nfs.path }}/{{ .Release.Name }}
             readOnly: false
           {{- end }} 
     {{- end }}
