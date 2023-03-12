@@ -23,7 +23,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-        - name: pre-install-job
+        - name: alpine
           image: arm32v7/alpine:3.17.2
           env:
           - name: WEBSITE_DIR
