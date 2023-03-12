@@ -32,7 +32,7 @@ spec:
             - mountPath: /storage
               name: {{ .Release.Name }}-volume
           command: ["/bin/mkdir"]
-          args: ["$(WEBSITE_DIR)"]
+          args: ["-p", "$(WEBSITE_DIR)"]
       volumes:
         - name: {{ .Release.Name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
