@@ -5,12 +5,12 @@ kind: Ingress
 metadata:
   name: {{ .Release.Name }}
   namespace: default
-  {{- if .Values.ingress.tls -}}
+  {{- if hasKey .Values.ingress "tls" }}
   annotations:
     kubernetes.io/ingress.class: traefik
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.middlewares: default-redirect-https@kubernetescrd
-  {{- end -}}
+  {{- end }}
 spec:
   rules:
     {{- range .Values.ingress.hosts }}
@@ -24,11 +24,13 @@ spec:
                 name: {{ $.Release.Name }}
                 port:
                   number: {{ $svcPort }}
-  {{- if $.Values.ingress.tls -}}
+    {{- end }}
+  {{- if hasKey .Values.ingress "tls" }}
   tls:
+  {{- range .Values.ingress.tls }}
     - secretName: {{ $.Release.Name }}-tls
       hosts:
-        - {{ .host | quote }}
+        - {{ .hosts | first  }}
+  {{- end }}
+  {{- end }}
   {{- end -}}
-    {{- end }}
-{{- end }}
