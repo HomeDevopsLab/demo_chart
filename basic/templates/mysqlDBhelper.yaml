@@ -1,4 +1,4 @@
-{{- if and .Values.volumes.enabled .Values.database.createdb -}}
+{{- if .Values.database.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -10,7 +10,7 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
     "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-weight": "-4"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   template:
@@ -24,10 +24,8 @@ spec:
       restartPolicy: Never
       containers:
         - name: pre-install-job
-          image: devkrolikowski/preinstall-helper:0.0.1
+          image: devkrolikowski/mysqldb-helper:0.0.1
           env:
-          - name: WEBSITE_DIR
-            value: "/storage/{{ .Release.Name }}"
           - name: DB_ADMIN_LOGIN
             valueFrom:
               secretKeyRef: 
@@ -52,21 +50,4 @@ spec:
                 key: password
           - name: DB_HOST
             value: {{ .Values.database.server }}
-          volumeMounts:
-            - mountPath: /storage
-              name: {{ .Release.Name }}-volume
-          command: ["/bin/sh", "-c"]
-          args:
-            - /bin/mkdir ${WEBSITE_DIR};
-              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p${DB_ADMIN_PASS} -h ${DB_HOST} -e "CREATE DATABASE ${APPDB_NAME}";
-              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p${DB_ADMIN_PASS} -h ${DB_HOST} -e "CREATE USER '${APPDB_LOGIN}'@'%' IDENTIFIED BY '${APPDB_PASS}'";
-              /usr/bin/mysql -u ${DB_ADMIN_LOGIN} -p${DB_ADMIN_PASS} -h ${DB_HOST} -e "GRANT ALL ON ${APPDB_NAME}.* TO '${APPDB_LOGIN}'@'%'";
-      volumes:
-        - name: {{ .Release.Name }}-volume
-          {{- if hasKey .Values.volumes.type "nfs" }}
-          {{- with .Values.volumes.type.nfs }}
-          nfs:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- end }}   
 {{- end }}

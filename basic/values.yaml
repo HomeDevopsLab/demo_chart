@@ -92,5 +92,4 @@ volumes:
       readOnly: false
 database:
   enabled: true
-  createdb: true
   server: ""

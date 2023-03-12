@@ -1,0 +1,43 @@
+{{- if and .Values.volumes.enabled .Values.database.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-preinstall"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: pre-install-job
+          image: devkrolikowski/preinstall-helper:0.0.1
+          env:
+          - name: WEBSITE_DIR
+            value: "/storage/{{ .Release.Name }}"
+          volumeMounts:
+            - mountPath: /storage
+              name: {{ .Release.Name }}-volume
+          command: ["/bin/mkdir", "${WEBSITE_DIR}"]
+      volumes:
+        - name: {{ .Release.Name }}-volume
+          {{- if hasKey .Values.volumes.type "nfs" }}
+          {{- with .Values.volumes.type.nfs }}
+          nfs:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}   
+{{- end }}
