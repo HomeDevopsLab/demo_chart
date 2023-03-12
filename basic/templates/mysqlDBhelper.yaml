@@ -24,7 +24,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: pre-install-job
-          image: devkrolikowski/mysqldb-helper:0.0.1
+          image: devkrolikowski/mysqldb-helper:0.0.2
           env:
           - name: DB_ADMIN_LOGIN
             valueFrom:
