@@ -31,7 +31,8 @@ spec:
           volumeMounts:
             - mountPath: /storage
               name: {{ .Release.Name }}-volume
-          command: ["/bin/mkdir", "${WEBSITE_DIR}"]
+          command: ["/bin/mkdir"]
+          args: ["${WEBSITE_DIR}"]
       volumes:
         - name: {{ .Release.Name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
