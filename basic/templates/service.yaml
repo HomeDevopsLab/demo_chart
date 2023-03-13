@@ -4,10 +4,10 @@ metadata:
   name: {{ .Release.Name }}
   namespace: default
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: {{ .Values.application.port | default 80 }}
+      targetPort: {{ .Values.application.port | default 80 }}
       protocol: TCP
       name: http
   selector:

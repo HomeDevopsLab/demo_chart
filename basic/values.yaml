@@ -34,10 +34,6 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
-  type: ClusterIP
-  port: 80
-
 ingress:
   enabled: false
   className: ""
@@ -83,6 +79,7 @@ affinity: {}
 application:
   name: ""
   type: ""
+  port: ""
 volumes:
   enabled: false
   type:
