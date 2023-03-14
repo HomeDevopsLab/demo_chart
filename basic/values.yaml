@@ -86,6 +86,7 @@ application:
   port: ""
 volumes:
   enabled: false
+  mountPath: ""
   type:
     nfs:
       server: ""
