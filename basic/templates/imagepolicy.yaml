@@ -1,3 +1,4 @@
+{{- if contains "imagepolicy" .Values.image.tag -}}
 ---
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
@@ -10,4 +11,4 @@ spec:
   policy:
     semver:
       range: '>=0.0.1'
-
+{{- end -}}
