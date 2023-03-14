@@ -1,4 +1,4 @@
-{{- if and .Values.volumes.enabled .Values.database.enabled -}}
+{{- if and .Values.volumes.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
