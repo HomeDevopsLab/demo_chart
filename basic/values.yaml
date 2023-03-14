@@ -93,5 +93,5 @@ volumes:
       path: ""
       readOnly: false
 database:
-  enabled: true
+  enabled: false
   server: ""
