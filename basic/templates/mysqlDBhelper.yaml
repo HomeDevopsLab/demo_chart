@@ -1,4 +1,4 @@
-{{- if .Values.database.enabled -}}
+{{- if hasKey .Values "database" -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
