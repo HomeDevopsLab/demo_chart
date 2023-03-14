@@ -40,6 +40,7 @@ service:
 
 ingress:
   enabled: false
+  ssl: false
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
