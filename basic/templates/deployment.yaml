@@ -20,7 +20,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           {{- if .Values.volumes.enabled }}
           volumeMounts:
-            - mountPath: {{ .Values.volume.mountPath | default  "/var/www/html" }}
+            - mountPath: {{ .Values.volumes.mountPath | default  "/var/www/html" }}
               name: {{ .Release.Name }}-volume
           {{- end}}
           env:
