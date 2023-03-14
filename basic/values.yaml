@@ -87,6 +87,7 @@ application:
 volumes:
   enabled: false
   mountPath: ""
+  ownership: ""
   type:
     nfs:
       server: ""

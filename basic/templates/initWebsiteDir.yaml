@@ -28,11 +28,17 @@ spec:
           env:
           - name: WEBSITE_DIR
             value: "/storage/{{ .Release.Name }}"
+          - name: OWNERSHIP
+            value: {{ .Values.volumes.ownership | default "root:root" }}
           volumeMounts:
             - mountPath: /storage
               name: {{ .Release.Name }}-volume
-          command: ["/bin/mkdir"]
-          args: ["-p", "$(WEBSITE_DIR)"]
+          command: ["/bin/sh"]
+          args:
+            - -c
+            - >-
+                mkdir -p $(WEBSITE_DIR);
+                chown $(OWNERSHIP) $(WEBSITE_DIR);
       volumes:
         - name: {{ .Release.Name }}-volume
           {{- if hasKey .Values.volumes.type "nfs" }}
